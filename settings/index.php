@@ -139,14 +139,14 @@ function pie_slack_options_page_html()
   settings_errors('pie_slack_messages');
   ?>
   <div class="wrap">
-    <h2><?= esc_html(get_admin_page_title()); ?></h2>
+    <h2><?php echo esc_html(get_admin_page_title()); ?></h2>
     <form method="POST" class="lg__d_f lg__fw_w">
       <input type="hidden" name="updated" value="true" />
       <?php wp_nonce_field('pie_slack_update', 'pie_slack_form'); ?>
       <?php foreach ($option_sections as $section_name => $section) { ?>
-        <section class="<?= $section['classes']; ?>">
+        <section class="<?php echo  $section['classes']; ?>">
           <div class="pie_slack_options-wrapper">
-            <h2><?= $section['title']; ?></h2>
+            <h2><?php echo  $section['title']; ?></h2>
             <div class="pie_slack_options-fields">
               <?php foreach ($section['fields'] as $field_name => $field) {
                 $field_markup = '';
@@ -176,7 +176,7 @@ function pie_slack_options_page_html()
         </section>
       <?php } ?>
       <p class="submit lg__fb_100">
-        <input type="submit" name="submit" id="submit" class="button button-primary" value="<?= __('Update', 'general'); ?>">
+        <input type="submit" name="submit" id="submit" class="button button-primary" value="<?php echo __('Update', 'general'); ?>">
       </p>
     </form>
   </div>

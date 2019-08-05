@@ -1,5 +1,4 @@
 <?php
-
 /*
   Plugin Name: WP Pie Slack
   Plugin URI: https://github.com/offeringofpie/pie-wordpress-slack.git
@@ -10,7 +9,6 @@
   License: MIT
 */
 
-include __DIR__ . '/settings/index.php';
 include __DIR__ . '/PieSlack.php';
 
 new PieSlack();

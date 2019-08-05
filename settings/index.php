@@ -124,7 +124,7 @@ function pie_slack_options_page_html()
 {
   global $option_sections;
 
-  if (!empty($_POST['updated']) && $_POST['updated'] === 'true') {
+  if (isset($_POST['updated']) && $_POST['updated'] === 'true') {
     handle_form();
   }
 

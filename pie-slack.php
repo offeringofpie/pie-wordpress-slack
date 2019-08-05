@@ -1,5 +1,4 @@
 <?php
-
 /*
   Plugin Name: WP Pie Slack
   Plugin URI: https://github.com/offeringofpie/pie-wordpress-slack.git

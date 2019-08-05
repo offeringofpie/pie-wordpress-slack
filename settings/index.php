@@ -124,7 +124,7 @@ function pie_slack_options_page_html()
 {
   global $option_sections;
 
-  if ($_POST['updated'] === 'true') {
+  if (isset($_POST['updated']) && $_POST['updated'] === 'true') {
     handle_form();
   }
 
@@ -143,12 +143,12 @@ function pie_slack_options_page_html()
     <form method="POST" class="lg__d_f lg__fw_w">
       <input type="hidden" name="updated" value="true" />
       <?php wp_nonce_field('pie_slack_update', 'pie_slack_form'); ?>
-      <? foreach ($option_sections as $section_name => $section) { ?>
+      <?php foreach ($option_sections as $section_name => $section) { ?>
         <section class="<?= $section['classes']; ?>">
           <div class="pie_slack_options-wrapper">
             <h2><?= $section['title']; ?></h2>
             <div class="pie_slack_options-fields">
-              <? foreach ($section['fields'] as $field_name => $field) {
+              <?php foreach ($section['fields'] as $field_name => $field) {
                 $field_markup = '';
 
                 switch ($field['type']) {
@@ -174,7 +174,7 @@ function pie_slack_options_page_html()
             </div>
           </div>
         </section>
-      <? } ?>
+      <?php } ?>
       <p class="submit lg__fb_100">
         <input type="submit" name="submit" id="submit" class="button button-primary" value="<?= __('Update', 'general'); ?>">
       </p>

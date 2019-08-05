@@ -103,6 +103,7 @@ class PieSlack
 
     $this->pie_send_to_slack($message);
   }
+
   function user_role_changed($id, $role, $old_roles)
   {
     $user = get_userdata($id)->user_email;
@@ -110,6 +111,7 @@ class PieSlack
 
     $this->pie_send_to_slack($message);
   }
+
   function user_login($user_login)
   {
     $user = get_user_by('login', $user_login);
@@ -181,4 +183,5 @@ class PieSlack
     );
   }
 }
+
 new PieSlack();

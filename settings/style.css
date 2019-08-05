@@ -1,0 +1,102 @@
+.pie_slack_options-section {
+  flex: 1 1 auto;
+  padding: 1rem 1rem 1rem 0;
+}
+
+.pie_slack_options-wrapper {
+  background-color: #fff;
+  border-left: 4px solid transparent;
+  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  height: calc(100% - 2rem);
+}
+
+.pie_slack_options-fields {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.pie_slack_options-fields label,
+.pie_slack_options-fields .description {
+  flex-basis: 100%;
+}
+
+.pie_slack_options-fields .checkbox {
+  flex-basis: 25%;
+}
+
+.pie_slack_options-section h2 {
+  margin: 0 0 1rem;
+}
+
+.main_section label {
+  display: block;
+}
+
+.pie_slack-label {
+  width: 150px;
+}
+
+.d_ib {
+  display: inline-block;
+}
+
+.mb_1rem {
+  margin-bottom: 1rem;
+}
+
+.ta_r {
+  text-align: right;
+}
+
+.bc_pink .pie_slack_options-wrapper {
+  border-color: #e51670;
+}
+
+.bc_green .pie_slack_options-wrapper {
+  border-color: #49c39e;
+}
+
+.d_f {
+  display: flex;
+}
+.fw_w {
+  flex-wrap: wrap;
+}
+.fb_33 {
+  flex-basis: 33%;
+  max-width: calc(33% - 1rem);
+}
+.fb_66 {
+  flex-basis: 66%;
+  max-width: calc(66% - 1rem);
+}
+.fb_100 {
+  flex-basis: 100%;
+  max-width: calc(100% - 1rem);
+}
+
+@media screen and (min-width: 1025px) {
+  .lg__d_f {
+    display: flex;
+  }
+  .lg__fw_w {
+    flex-wrap: wrap;
+  }
+  .lg__fb_33 {
+    flex-basis: 33%;
+    max-width: calc(33% - 1rem);
+  }
+  .lg__fb_50 {
+    flex-basis: 50%;
+    max-width: calc(50% - 1rem);
+  }
+  .lg__fb_66 {
+    flex-basis: 66%;
+    max-width: calc(66% - 1rem);
+  }
+  .lg__fb_100 {
+    flex-basis: 100%;
+    max-width: 100%;
+  }
+}

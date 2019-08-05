@@ -9,6 +9,7 @@
   License: MIT
 */
 
+include __DIR__ . '/settings/index.php';
 include __DIR__ . '/PieSlack.php';
 
 new PieSlack();

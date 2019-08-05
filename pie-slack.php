@@ -9,6 +9,10 @@
   License: MIT
 */
 
+define('PLUGIN_FILE_DIR', plugin_basename(__FILE__));
+define('PLUGIN_FILE_NAME', __FILE__);
+
+include __DIR__ . '/settings/index.php';
 include __DIR__ . '/PieSlack.php';
 
 new PieSlack();

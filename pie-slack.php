@@ -15,7 +15,7 @@ class PieSlack
 {
   function __construct()
   {
-    add_filter('plugin_action_links_pie-slack/pie-slack.php', [$this, 'add_links']);
+    add_filter('plugin_action_links_'.plugin_basename(__FILE__), [$this, 'add_links']);
     add_action('admin_menu', [$this, 'register_page']);
 
     add_action('admin_enqueue_scripts', [$this, 'add_stylesheet']);
@@ -32,7 +32,7 @@ class PieSlack
 
   public function add_links($links)
   {
-    $mylinks = ['settings' => '<a href="options-general.php?page=pie_slack">' . __('Settings', 'General') . '</a>'];
+    $mylinks = ['<a href="options-general.php?page=pie_slack">' . __('Settings', 'General') . '</a>'];
 
     return array_merge($links, $mylinks);
   }

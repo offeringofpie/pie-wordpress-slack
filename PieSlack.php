@@ -44,27 +44,47 @@ class PieSlack {
 	 *
 	 */
 	public function hook_actions() {
-		if ( null !== get_option( 'pie_slack_on_page_update' ) ) {
+		if ( !empty( get_option( 'pie_slack_on_page_update' ) ) ) {
 			add_action( 'save_post', [ $this, 'page_updated' ] );
 		}
-		if ( null !== get_option( 'pie_slack_on_user_deleted' ) ) {
+		if ( !empty( get_option( 'pie_slack_on_user_deleted' ) ) ) {
 			add_action( 'delete_user', [ $this, 'user_deleted' ] );
 		}
-		if ( null !== get_option( 'pie_slack_on_user_login' ) ) {
+		if ( !empty( get_option( 'pie_slack_on_user_login' ) ) ) {
 			add_action( 'wp_login', [ $this, 'user_login' ] );
 		}
-		if ( null !== get_option( 'pie_slack_on_user_created' ) ) {
+		if ( !empty( get_option( 'pie_slack_on_user_login_failed' ) ) ) {
+			add_action( 'wp_login_failed', [ $this, 'user_login_failed' ] );
+		}
+		if ( !empty( get_option( 'pie_slack_on_user_created' ) ) ) {
 			add_action( 'user_register', [ $this, 'user_created' ] );
 		}
-		if ( null !== get_option( 'pie_slack_on_user_role_changed' ) ) {
+		if ( !empty( get_option( 'pie_slack_on_user_role_changed' ) ) ) {
 			add_action( 'set_user_role', [ $this, 'user_role_changed' ], 10, 3 );
 		}
-		if ( null !== get_option( 'pie_slack_on_upload' ) ) {
+		if ( !empty( get_option( 'pie_slack_on_upload' ) ) ) {
 			add_action( 'add_attachment', [ $this, 'media_upload' ] );
 		}
-		if ( null !== get_option( 'pie_slack_on_upload_delete' ) ) {
+		if ( !empty( get_option( 'pie_slack_on_upload_delete' ) ) ) {
 			add_action( 'delete_attachment', [ $this, 'media_delete' ] );
 		}
+		if ( !empty( get_option( 'pie_slack_on_plugin_activated' ) ) ) {
+			add_action( 'activated_plugin', [ $this, 'run_daily' ] );
+		}
+		if ( !empty( get_option( 'pie_slack_on_plugin_deactivated' ) ) ) {
+			add_action( 'deactivated_plugin', [ $this, 'plugin_deactivated' ] );
+		}
+		// if ( !empty( get_option( 'pie_slack_on_update' ) ) ) {
+		// 	register_activation_hook(__FILE__, 'my_activation');
+		// 	function my_activation() {
+		// 		if (! wp_next_scheduled ( 'pie_slack_daily_check' )) {
+		// 			wp_schedule_event(time(), 'daily', 'pie_slack_daily_check');
+		// 		}
+		// 	}
+		// 	add_action('pie_slack_daily_check', 'run_daily');
+		// } else {
+		// 	wp_clear_scheduled_hook('pie_slack_daily_check');
+		// }
 	}
 
 	/**
@@ -133,6 +153,15 @@ class PieSlack {
 	}
 
 	/**
+	 * @param $user_login_failed
+	 */
+	public function user_login_failed( $username ) {
+		$message    = "Login attempt failed: " . $username;
+
+		$this->pie_send_to_slack( $message );
+	}
+
+	/**
 	 * @param $id
 	 */
 	public function media_upload( $id ) {
@@ -156,6 +185,34 @@ class PieSlack {
 
 		$this->pie_send_to_slack( $message );
 	}
+
+	/**
+	 * @param $plugin
+	 */
+	public function plugin_activated( $plugin ) {
+		$message    = "Plugin activated: " . $plugin;
+
+		$this->pie_send_to_slack( $message );
+	}
+
+	/**
+	 * @param $plugin
+	 */
+	public function plugin_deactivated( $plugin ) {
+		$message    = "Plugin deactivated: " . $plugin;
+
+		$this->pie_send_to_slack( $message );
+	}
+
+	// public function run_daily() {
+	// 	do_action( "wp_update_plugins" );
+	// 	$update_plugins = get_site_transient( 'update_plugins' );
+	// 	if ( !empty( $update_plugins->response ) ) {
+	// 		$plugins_need_update = $update_plugins->response;
+	// 		$active_plugins      = array_flip( get_option( 'active_plugins' ) );
+	// 		$plugins_need_update = array_intersect_key( $plugins_need_update, $active_plugins );
+	// 	}
+	// }
 
 	/**
 	 * function that sends the event to slack

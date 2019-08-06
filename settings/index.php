@@ -4,34 +4,34 @@ $option_sections
 	= [
 	'main_options' => [
 		'classes' => 'pie_slack_options-section main_options lg__fb_50 bc_green',
-		'title'   => __( 'Main options', 'pie_slack' ),
-		'fields'  => [
-			'pie_slack_endpoint'  => [
-				'type'        => 'text',
-				'label'       => __( 'Slack Endpoint', 'pie_slack' ),
-				'value'       => get_option( 'pie_slack_endpoint' ),
+		'title'	 => __( 'Main options', 'pie_slack' ),
+		'fields'	=> [
+			'pie_slack_endpoint'	=> [
+				'type'				=> 'text',
+				'label'			 => __( 'Slack Endpoint', 'pie_slack' ),
+				'value'			 => get_option( 'pie_slack_endpoint' ),
 				'placeholder' => 'https://hooks.slack.com/services/<extra_code>',
 				'description' => __( 'More information <a href="https://api.slack.com/incoming-webhooks" title="Slack - Incoming Webhooks" target="_blank">here</a>.',
 					'pie_slack' )
 			],
-			'pie_slack_channel'   => [
-				'type'        => 'text',
-				'label'       => __( 'Send to Channel', 'pie_slack' ),
-				'value'       => get_option( 'pie_slack_channel' ),
+			'pie_slack_channel'	 => [
+				'type'				=> 'text',
+				'label'			 => __( 'Send to Channel', 'pie_slack' ),
+				'value'			 => get_option( 'pie_slack_channel' ),
 				'placeholder' => '#general',
 				'description' => ''
 			],
-			'pie_slack_bot_name'  => [
-				'type'        => 'text',
-				'label'       => __( 'Bot Name', 'pie_slack' ),
-				'value'       => get_option( 'pie_slack_bot_name' ),
+			'pie_slack_bot_name'	=> [
+				'type'				=> 'text',
+				'label'			 => __( 'Bot Name', 'pie_slack' ),
+				'value'			 => get_option( 'pie_slack_bot_name' ),
 				'placeholder' => 'Wordpress Name',
 				'description' => ''
 			],
 			'pie_slack_bot_emoji' => [
-				'type'        => 'text',
-				'label'       => __( 'Emoji', 'pie_slack' ),
-				'value'       => get_option( 'pie_slack_bot_emoji' ),
+				'type'				=> 'text',
+				'label'			 => __( 'Emoji', 'pie_slack' ),
+				'value'			 => get_option( 'pie_slack_bot_emoji' ),
 				'placeholder' => ':watermelon:',
 				'description' => __( 'More information <a href="https://www.webfx.com/tools/emoji-cheat-sheet/" title="Slack - Emoji list" target="_blank">here</a>.',
 					'pie_slack' )
@@ -39,56 +39,77 @@ $option_sections
 
 		]
 	],
-	'hooks'        => [
+	'hooks'				=> [
 		'classes' => 'pie_slack_options-section hooks lg__fb_50 bc_pink',
-		'title'   => __( 'Send on Events', 'pie_slack' ),
-		'fields'  => [
-			'pie_slack_on_user_login'        => [
-				'type'        => 'checkbox',
-				'label'       => __( 'User Login', 'pie_slack' ),
-				'value'       => get_option( 'pie_slack_on_user_login' ),
+		'title'	 => __( 'Send on Events', 'pie_slack' ),
+		'fields'	=> [
+			'pie_slack_on_user_login'				=> [
+				'type'				=> 'checkbox',
+				'label'			 => __( 'User Login', 'pie_slack' ),
+				'value'			 => get_option( 'pie_slack_on_user_login' ),
 				'placeholder' => '',
 				'description' => ''
 			],
-			'pie_slack_on_user_deleted'      => [
-				'type'        => 'checkbox',
-				'label'       => __( 'User Removed', 'pie_slack' ),
-				'value'       => get_option( 'pie_slack_on_user_deleted' ),
+			'pie_slack_on_user_login_failed'				=> [
+				'type'				=> 'checkbox',
+				'label'			 => __( 'User Login Fail', 'pie_slack' ),
+				'value'			 => get_option( 'pie_slack_on_user_login_failed' ),
 				'placeholder' => '',
 				'description' => ''
 			],
-			'pie_slack_on_user_created'      => [
-				'type'        => 'checkbox',
-				'label'       => __( 'User Created', 'pie_slack' ),
-				'value'       => get_option( 'pie_slack_on_user_created' ),
+			'pie_slack_on_user_deleted'			=> [
+				'type'				=> 'checkbox',
+				'label'			 => __( 'User Removed', 'pie_slack' ),
+				'value'			 => get_option( 'pie_slack_on_user_deleted' ),
+				'placeholder' => '',
+				'description' => ''
+			],
+			'pie_slack_on_user_created'			=> [
+				'type'				=> 'checkbox',
+				'label'			 => __( 'User Created', 'pie_slack' ),
+				'value'			 => get_option( 'pie_slack_on_user_created' ),
 				'placeholder' => '',
 				'description' => ''
 			],
 			'pie_slack_on_user_role_changed' => [
-				'type'        => 'checkbox',
-				'label'       => __( 'User Role Change', 'pie_slack' ),
-				'value'       => get_option( 'pie_slack_on_user_role_changed' ),
+				'type'				=> 'checkbox',
+				'label'			 => __( 'User Role Change', 'pie_slack' ),
+				'value'			 => get_option( 'pie_slack_on_user_role_changed' ),
 				'placeholder' => '',
 				'description' => ''
 			],
-			'pie_slack_on_page_update'       => [
-				'type'        => 'checkbox',
-				'label'       => __( 'Page Update', 'pie_slack' ),
-				'value'       => get_option( 'pie_slack_on_page_update' ),
+			'pie_slack_on_page_update'			 => [
+				'type'				=> 'checkbox',
+				'label'			 => __( 'Page Update', 'pie_slack' ),
+				'value'			 => get_option( 'pie_slack_on_page_update' ),
 				'placeholder' => '',
 				'description' => ''
 			],
-			'pie_slack_on_upload'            => [
-				'type'        => 'checkbox',
-				'label'       => __( 'Media uploaded', 'pie_slack' ),
-				'value'       => get_option( 'pie_slack_on_upload' ),
+			'pie_slack_on_upload'						=> [
+				'type'				=> 'checkbox',
+				'label'			 => __( 'Media uploaded', 'pie_slack' ),
+				'value'			 => get_option( 'pie_slack_on_upload' ),
 				'placeholder' => '',
 				'description' => ''
 			],
-			'pie_slack_on_upload_delete'     => [
-				'type'        => 'checkbox',
-				'label'       => __( 'Media removed', 'pie_slack' ),
-				'value'       => get_option( 'pie_slack_on_upload_delete' ),
+			'pie_slack_on_upload_delete'		 => [
+				'type'				=> 'checkbox',
+				'label'			 => __( 'Media removed', 'pie_slack' ),
+				'value'			 => get_option( 'pie_slack_on_upload_delete' ),
+				'placeholder' => '',
+				'description' => ''
+			],
+			'pie_slack_on_plugin_activated'		 => [
+				'type'				=> 'checkbox',
+				'label'			 => __( 'Plugin Activated', 'pie_slack' ),
+				'value'			 => get_option( 'pie_slack_on_plugin_activated' ),
+				'placeholder' => '',
+				'description' => ''
+			],
+			'pie_slack_on_plugin_deactivated'		 => [
+				'type'				=> 'checkbox',
+				'label'			 => __( 'Plugin Deactivated', 'pie_slack' ),
+				'value'			 => get_option( 'pie_slack_on_plugin_deactivated' ),
 				'placeholder' => '',
 				'description' => ''
 			],
@@ -135,23 +156,23 @@ function pie_slack_options_page_html() {
 
 	settings_errors( 'pie_slack_messages' );
 	?>
-    <div class="wrap">
-        <h2><?php echo esc_html( get_admin_page_title() ); ?></h2>
-        <form method="POST" class="lg__d_f lg__fw_w">
-            <input type="hidden" name="updated" value="true"/>
+		<div class="wrap">
+				<h2><?php echo esc_html( get_admin_page_title() ); ?></h2>
+				<form method="POST" class="lg__d_f lg__fw_w">
+						<input type="hidden" name="updated" value="true"/>
 
 			<?php wp_nonce_field( 'pie_slack_update', 'pie_slack_form' ); ?>
 
 			<?php foreach ( $option_sections as $section_name => $section ) { ?>
-                <section class="<?php echo $section['classes']; ?>">
-                    <div class="pie_slack_options-wrapper">
-                        <h2><?php echo $section['title']; ?></h2>
-                        <div class="pie_slack_options-fields">
+								<section class="<?php echo $section['classes']; ?>">
+										<div class="pie_slack_options-wrapper">
+												<h2><?php echo $section['title']; ?></h2>
+												<div class="pie_slack_options-fields">
 							<?php foreach ( $section['fields'] as $field_name => $field ) {
 								$field_markup = '';
 
 								if ( $field['type'] === 'checkbox' ) {
-									$checked      = $field['value'] ? 'checked="checked"' : '';
+									$checked			= $field['value'] ? 'checked="checked"' : '';
 									$field_markup = '<div class="checkbox mb_1rem"><input name="' . $field_name . '" id="' . $field_name . '" type="checkbox" value="1" ' . $checked . ' class="regular-text" /><label for="' . $field_name . '">' . $field['label'] . '</label></div>';
 								} else {
 									$field_markup = '<div class="mb_1rem"><label for="' . $field_name . '"><span class="pie_slack-label d_ib">' . $field['label'] . '</span><input name="' . $field_name . '" id="' . $field_name . '" type="text" value="' . $field['value'] . '" placeholder="' . $field['placeholder'] . '" class="regular-text" /></label>';
@@ -161,15 +182,14 @@ function pie_slack_options_page_html() {
 
 								echo $field_markup;
 							} ?>
-                        </div>
-                    </div>
-                </section>
+												</div>
+										</div>
+								</section>
 			<?php } ?>
-            <p class="submit lg__fb_100">
-                <input type="submit" name="submit" id="submit" class="button button-primary"
-                       value="<?php echo __( 'Update', 'general' ); ?>">
-            </p>
-        </form>
-    </div>
+						<p class="submit lg__fb_100">
+								<input type="submit" name="submit" id="submit" class="button button-primary" value="<?php echo __( 'Update', 'general' ); ?>">
+						</p>
+				</form>
+		</div>
 	<?php
 }

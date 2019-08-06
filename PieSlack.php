@@ -95,9 +95,9 @@ class PieSlack {
       return;
     }
 
-    $post_title = esc_html(get_the_title($id));
-    $post_type = get_post_type($id);
-    $post_url = get_permalink($id);
+    $post_title  = esc_html(get_the_title($id));
+    $post_type   = get_post_type($id);
+    $post_url    = get_permalink($id);
     $post_status = get_post_status($id);
     $post_author = get_userdata(get_post_meta($id, '_edit_last', true))->user_email;
 
@@ -110,10 +110,10 @@ class PieSlack {
    * @param $id
    */
   public function user_created($id) {
-    $user = get_userdata($id);
+    $user       = get_userdata($id);
     $user_email = $user->user_email;
-    $user_role = implode($user->roles);
-    $message = 'Account created for ' . $user_email . ' (' . $user_role . ').';
+    $user_role  = implode($user->roles);
+    $message    = 'Account created for ' . $user_email . ' (' . $user_role . ').';
 
     $this->pie_send_to_slack($message);
   }
@@ -122,7 +122,7 @@ class PieSlack {
    * @param $id
    */
   public function user_deleted($id) {
-    $user = get_userdata($id)->user_email;
+    $user    = get_userdata($id)->user_email;
     $message = 'Account deleted for ' . $user;
 
     $this->pie_send_to_slack($message);
@@ -134,7 +134,7 @@ class PieSlack {
    * @param $old_roles
    */
   public function user_role_changed($id, $role, $old_roles) {
-    $user = get_userdata($id)->user_email;
+    $user    = get_userdata($id)->user_email;
     $message = 'Role changes for ' . $user . ': ' . implode($old_roles) . ' > ' . $role;
 
     $this->pie_send_to_slack($message);
@@ -144,9 +144,9 @@ class PieSlack {
    * @param $user_login
    */
   public function user_login($user_login) {
-    $user = get_user_by('login', $user_login);
+    $user       = get_user_by('login', $user_login);
     $user_email = $user->user_email;
-    $message = $user_email . ' just logged in';
+    $message    = $user_email . ' just logged in';
 
     $this->pie_send_to_slack($message);
   }
@@ -164,8 +164,8 @@ class PieSlack {
    * @param $id
    */
   public function media_upload($id) {
-    $path = get_post_meta($id, '_wp_attached_file', true);
-    $filesize = number_format(filesize(get_attached_file($id)) / 1024, 2) . 'KB';
+    $path        = get_post_meta($id, '_wp_attached_file', true);
+    $filesize    = number_format(filesize(get_attached_file($id)) / 1024, 2) . 'KB';
     $post_author = get_userdata(get_post($id)->post_author)->user_email;
 
     $message = $path . ' [' . $filesize . ']' . ' has been uploaded by ' . $post_author;
@@ -177,7 +177,7 @@ class PieSlack {
    * @param $id
    */
   public function media_delete($id) {
-    $path = get_post_meta($id, '_wp_attached_file', true);
+    $path        = get_post_meta($id, '_wp_attached_file', true);
     $post_author = get_userdata(get_post($id)->post_author)->user_email;
 
     $message = $path . ' has been removed by ' . $post_author;
@@ -220,16 +220,16 @@ class PieSlack {
    */
   public function pie_send_to_slack($body) {
     $endpoint = get_option('pie_slack_endpoint');
-    $channel = get_option('pie_slack_channel');
+    $channel  = get_option('pie_slack_channel');
     $bot_name = get_option('pie_slack_bot_name');
-    $emoji = get_option('pie_slack_bot_emoji');
+    $emoji    = get_option('pie_slack_bot_emoji');
 
     $data = [
       'payload' => json_encode(
         [
-          'channel' => $channel,
-          'text' => $body,
-          'username' => $bot_name,
+          'channel'    => $channel,
+          'text'       => $body,
+          'username'   => $bot_name,
           'icon_emoji' => $emoji,
         ]
       ),
@@ -238,14 +238,14 @@ class PieSlack {
     wp_remote_post(
       $endpoint,
       [
-        'method' => 'POST',
-        'timeout' => 30,
+        'method'      => 'POST',
+        'timeout'     => 30,
         'redirection' => 5,
         'httpversion' => '1.0',
-        'blocking' => true,
-        'headers' => [],
-        'body' => $data,
-        'cookies' => [],
+        'blocking'    => true,
+        'headers'     => [],
+        'body'        => $data,
+        'cookies'     => [],
       ]
     );
   }

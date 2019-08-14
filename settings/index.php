@@ -7,10 +7,10 @@
       'fields'  => [
         'pie_slack_endpoint'  => [
           'type'        => 'text',
-          'label'       => __('Slack Endpoint', 'pie_slack'),
+          'label'       => __('Webhook URL', 'pie_slack'),
           'value'       => get_option('pie_slack_endpoint'),
           'placeholder' => 'https://hooks.slack.com/services/<extra_code>',
-          'description' => __('More information <a href="https://api.slack.com/incoming-webhooks" title="Slack - Incoming Webhooks" target="_blank">here</a>.',
+          'description' => __('More information <a href="https: //slack.com/services/BLP20SJNN" title="Slack - Incoming Webhooks" target="_blank">here</a>.',
             'pie_slack'),
         ],
         'pie_slack_channel'   => [

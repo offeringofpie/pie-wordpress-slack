@@ -68,7 +68,7 @@ class PieSlack {
       add_action('delete_attachment', [$this, 'media_delete']);
     }
     if (!empty(get_option('pie_slack_on_plugin_activated'))) {
-      add_action('activated_plugin', [$this, 'run_daily']);
+      add_action('activated_plugin', [$this, 'plugin_activated']);
     }
     if (!empty(get_option('pie_slack_on_plugin_deactivated'))) {
       add_action('deactivated_plugin', [$this, 'plugin_deactivated']);
@@ -90,20 +90,27 @@ class PieSlack {
    * @param $id
    */
   public function page_updated($id) {
-    // don't send if the post is a revision
-    if (wp_is_post_revision($id)) {
-      return;
-    }
-
     $post_title  = esc_html(get_the_title($id));
     $post_type   = get_post_type($id);
     $post_url    = get_permalink($id);
     $post_status = get_post_status($id);
     $post_author = get_userdata(get_post_meta($id, '_edit_last', true))->user_email;
+    $data        = [
+      "title"    => "Page updated",
+      "subtitle" => $post_title,
+      "text"     => 'Url: ' . $post_url . '
+Author: ' . $post_author . '
+Type: ' . $post_type . '
+Status: ' . $post_status,
+    ];
 
-    $message = $post_url . ' "' . $post_title . '" [' . $post_type . '][' . $post_status . '] was updated by ' . $post_author;
+    // don't send if the post is a revision or autodraft
+    if (wp_is_post_revision($id) || $post_status === 'autodraft') {
+      return;
+    }
 
-    $this->pie_send_to_slack($message);
+    $this->pie_send_to_slack($data);
+
   }
 
   /**
@@ -114,18 +121,27 @@ class PieSlack {
     $user_email = $user->user_email;
     $user_role  = implode($user->roles);
     $message    = 'Account created for ' . $user_email . ' (' . $user_role . ').';
+    $data       = [
+      "title" => "Account Created",
+      "text"  => 'E-mail: ' . $user_email . '
+Role(s): ' . $user_role,
+    ];
 
-    $this->pie_send_to_slack($message);
+    $this->pie_send_to_slack($data);
   }
 
   /**
    * @param $id
    */
   public function user_deleted($id) {
-    $user    = get_userdata($id)->user_email;
-    $message = 'Account deleted for ' . $user;
+    $user = get_userdata($id)->user_email;
+    $data = [
+      "title" => "Account Deleted",
+      "text"  => 'E-mail: ' . $user,
+      "color" => "#e51670",
+    ];
 
-    $this->pie_send_to_slack($message);
+    $this->pie_send_to_slack($data);
   }
 
   /**
@@ -134,10 +150,14 @@ class PieSlack {
    * @param $old_roles
    */
   public function user_role_changed($id, $role, $old_roles) {
-    $user    = get_userdata($id)->user_email;
-    $message = 'Role changes for ' . $user . ': ' . implode($old_roles) . ' > ' . $role;
+    $user = get_userdata($id)->user_email;
+    $data = [
+      "title" => "Account Roles Changed",
+      "text"  => 'E-mail: ' . $user . '
+Before: ' . implode(", ", $old_roles),
+    ];
 
-    $this->pie_send_to_slack($message);
+    $this->pie_send_to_slack($data);
   }
 
   /**
@@ -146,18 +166,25 @@ class PieSlack {
   public function user_login($user_login) {
     $user       = get_user_by('login', $user_login);
     $user_email = $user->user_email;
-    $message    = $user_email . ' just logged in';
+    $data       = [
+      "title" => "User Login",
+      "text"  => 'E-mail: ' . $user_email,
+    ];
 
-    $this->pie_send_to_slack($message);
+    $this->pie_send_to_slack($data);
   }
 
   /**
    * @param $user_login_failed
    */
   public function user_login_failed($username) {
-    $message = "Login attempt failed: " . $username;
+    $data = [
+      "title" => "Login Failed",
+      "text"  => $username,
+      "color" => "#e51670",
+    ];
 
-    $this->pie_send_to_slack($message);
+    $this->pie_send_to_slack($data);
   }
 
   /**
@@ -167,10 +194,14 @@ class PieSlack {
     $path        = get_post_meta($id, '_wp_attached_file', true);
     $filesize    = number_format(filesize(get_attached_file($id)) / 1024, 2) . 'KB';
     $post_author = get_userdata(get_post($id)->post_author)->user_email;
+    $data        = [
+      "title"    => "Media uploaded",
+      "subtitle" => $path,
+      "text"     => 'Author: ' . $post_author . '
+Size: ' . $filesize,
+    ];
 
-    $message = $path . ' [' . $filesize . ']' . ' has been uploaded by ' . $post_author;
-
-    $this->pie_send_to_slack($message);
+    $this->pie_send_to_slack($data);
   }
 
   /**
@@ -179,28 +210,39 @@ class PieSlack {
   public function media_delete($id) {
     $path        = get_post_meta($id, '_wp_attached_file', true);
     $post_author = get_userdata(get_post($id)->post_author)->user_email;
+    $data        = [
+      "title"    => "Media removed",
+      "subtitle" => $path,
+      "text"     => 'Author: ' . $post_author,
+      "color"    => "#e51670",
+    ];
 
-    $message = $path . ' has been removed by ' . $post_author;
-
-    $this->pie_send_to_slack($message);
+    $this->pie_send_to_slack($data);
   }
 
   /**
    * @param $plugin
    */
   public function plugin_activated($plugin) {
-    $message = "Plugin activated: " . $plugin;
+    $data = [
+      "title"    => "Plugin Activated",
+      "subtitle" => $plugin,
+    ];
 
-    $this->pie_send_to_slack($message);
+    $this->pie_send_to_slack($data);
   }
 
   /**
    * @param $plugin
    */
   public function plugin_deactivated($plugin) {
-    $message = "Plugin deactivated: " . $plugin;
+    $data = [
+      "title"    => "Plugin Deactivated",
+      "subtitle" => $plugin,
+      "color"    => "#e51670",
+    ];
 
-    $this->pie_send_to_slack($message);
+    $this->pie_send_to_slack($data);
   }
 
   // public function run_daily() {
@@ -218,7 +260,7 @@ class PieSlack {
    *
    * @param string $body Body message sent to slack
    */
-  public function pie_send_to_slack($body) {
+  public function pie_send_to_slack($data) {
     $endpoint = get_option('pie_slack_endpoint');
     $channel  = get_option('pie_slack_channel');
     $bot_name = get_option('pie_slack_bot_name');
@@ -228,7 +270,17 @@ class PieSlack {
       'payload' => json_encode(
         [
           'channel'    => $channel,
-          'text'       => $body,
+          'text'       => false,
+          "fallback"   => $data['title'] . ':' . $data['text'],
+          "pretext"    => $data['title'],
+          "color"      => $data['color'] ? $data['color'] : "#49c39e",
+          "fields"     => [
+            [
+              "title" => $data['subtitle'] ? $data['subtitle'] : $data['title'], // The title may not contain markup and will be escaped for you
+              "value" => $data['text'],
+              "short" => false, // Optional flag indicating whether the `value` is short enough to be displayed side-by-side with other values
+            ],
+          ],
           'username'   => $bot_name,
           'icon_emoji' => $emoji,
         ]

@@ -104,8 +104,8 @@ Type: ' . $post_type . '
 Status: ' . $post_status,
     ];
 
-    // don't send if the post is a revision or autodraft
-    if (wp_is_post_revision($id) || $post_status === 'autodraft') {
+    // don't send if the post is a revision or auto-draft
+    if (wp_is_post_revision($id) || $post_status === 'auto-draft') {
       return;
     }
 

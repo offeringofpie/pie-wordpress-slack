@@ -104,7 +104,7 @@ Type: ' . $post_type . '
 Status: ' . $post_status,
     ];
 
-    // don't send if the post is a revision or auto-draft
+    // don't send if the post is a revision or auto-draft or menu change
     if (wp_is_post_revision($id) || $post_status === 'auto-draft' || $post_type === 'nav_menu_item') {
       return;
     }
